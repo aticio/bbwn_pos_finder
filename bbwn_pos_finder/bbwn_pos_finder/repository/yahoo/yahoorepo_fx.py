@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 
 class YahooRepoFX:
     def get_data(self, symbol, interval):
-        start_date_str = (datetime.now() - timedelta(days=100)).strftime("%Y-%m-%d")
+        start_date_str = (datetime.now() - timedelta(days=500)).strftime("%Y-%m-%d")
         end_date_str = datetime.now().strftime("%Y-%m-%d")
         data = yf.download(tickers=symbol, interval=interval, start=start_date_str, end=end_date_str, auto_adjust=True, progress=False)['Close']
         return data.values.tolist()
