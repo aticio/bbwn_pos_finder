@@ -6,3 +6,4 @@ watchdog
 flake8
 Sphinx
 legitindicators
+yfinance

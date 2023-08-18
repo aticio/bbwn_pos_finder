@@ -3,6 +3,7 @@ import pytest
 from unittest import mock
 
 from bbwn_pos_finder.use_cases.analyze import analyze
+from bbwn_pos_finder.requests.analyze import build_analyze_request
 
 
 @pytest.fixture
@@ -20,12 +21,15 @@ def test_analyze_with_parameters(market_data):
 
     repo = mock.Mock()
     repo.get_data.return_value = market_data
-    result = analyze(repo, symbol, interval, bbwn_length, bbwn_std, ssf_length_1, ssf_length_2)
+
+    request = build_analyze_request({"symbol": symbol, "interval": interval, "bbwn_length": bbwn_length, "bbwn_std": bbwn_std, "ssf_length_1": ssf_length_1, "ssf_length_2": ssf_length_2})
+
+    response = analyze(repo, request)
 
     repo.get_data.assert_called_with(symbol, interval)
-    assert result.symbol == "BTCUSDT"
-    assert result.bbwn_length == 20
-    assert result.bbwn_std == 2
-    assert result.ssf_length_1 == 15
-    assert result.ssf_length_2 == 30
-    assert result.open_position is False
+    assert response.value.symbol == "BTCUSDT"
+    assert response.value.bbwn_length == 20
+    assert response.value.bbwn_std == 2
+    assert response.value.ssf_length_1 == 15
+    assert response.value.ssf_length_2 == 30
+    assert response.value.open_position is False
